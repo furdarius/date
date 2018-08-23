@@ -1,4 +1,4 @@
-<p align="center"><img src="https://habrastorage.org/webt/59/e2/71/59e271948a792190098780.png"></p>
+<p align="center"><img src="https://habrastorage.org/webt/ii/yv/xm/iiyvxmyjl73fnkngbop5oyemfd0.png"></p>
 
 [![GoDoc](https://godoc.org/github.com/furdarius/date?status.svg)](https://godoc.org/github.com/furdarius/date)
 [![Build Status](https://travis-ci.org/furdarius/date.svg?branch=master)](https://travis-ci.org/furdarius/date)

@@ -17,8 +17,8 @@ package date
 import (
 	"encoding/json"
 	"testing"
-
 	"time"
+
 	"github.com/stretchr/testify/assert"
 )
 

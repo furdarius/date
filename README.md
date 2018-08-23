@@ -19,7 +19,8 @@ $ dep ensure -add github.com/furdarius/date
 ```
 
 ## Usage
-```
+```go
+
 start, _ := date.Parse("2018-10-15")
 end, _ := date.Parse("2018-10-20")
 

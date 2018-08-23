@@ -6,7 +6,27 @@
 
 # Date it easy
 
-Small, user-friendly library to help you work with dates in Go.
+Small, user-friendly library to help you work with dates and dates ranges in Go. A time-zone-independent representation of time used that follows the rules of the proleptic Gregorian calendar with exactly 24-hour days, 60-minute hours, and 60-second minutes.
+
+[Date](https://godoc.org/github.com/furdarius/date#Date) supports [SQL scan](https://godoc.org/github.com/furdarius/date#Date.Scan) and JSON [marshalling](https://godoc.org/github.com/furdarius/date#Date.MarshalText)/[unmarshalling](https://godoc.org/github.com/furdarius/date#Date.UnmarshalText) out of the box.
+
+[Date](https://godoc.org/github.com/furdarius/date#Date) can be [parsed](https://godoc.org/github.com/furdarius/date#Parse) from string `start, err := date.Parse("2018-10-15")` or created manually `d := date.Date{2018, 10, 1}`.
+
+Two [Dates](https://godoc.org/github.com/furdarius/date#Date) define [Range](https://godoc.org/github.com/furdarius/date#Range) `date.Range{date.Date{2018, 10, 1}, date.Date{2018, 10, 5}}`.
+
+[RangeSet](https://godoc.org/github.com/furdarius/date#RangeSet) can be used to work with Ranges:
+```go
+
+ranges = date.RangeSet(ranges).
+	Filter(func(dr date.Range) bool {
+		return !dr.Empty()
+	}).
+	TrimEnd().
+	Sub(date.Range{date.Date{2018, 10, 1}, date.Date{2018, 10, 5}}).
+	ShiftEnd(5).
+	List()
+```
+
 
 ## Install
 ```

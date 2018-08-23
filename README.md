@@ -18,6 +18,22 @@ go get github.com/furdarius/date
 $ dep ensure -add github.com/furdarius/date
 ```
 
+## Usage
+```
+start, _ := date.Parse("2018-10-15")
+end, _ := date.Parse("2018-10-20")
+
+interval1 := date.Range{start, end}
+interval2 := date.Range{start, end.AddDays(-1)}
+
+base := []date.Range{
+	date.Range{date.Date{2018, 10, 1}, date.Date{2018, 10, 5}},
+	date.Range{date.Date{2018, 10, 8}, date.Date{2018, 10, 22}},
+}
+
+ranges := date.RangeSet(base).Sub(interval).Impose(interval2).ExtendEnd().List()
+```
+
 ## Contributing
 
 Pull requests are very much welcomed. Make sure a test or example is included that covers your change and

@@ -1,0 +1,20 @@
+language: go
+
+go:
+  - "1.10.x"
+  - tip
+
+before_install:
+  # Setup dependency management tool
+  - curl -L -s https://github.com/golang/dep/releases/download/v0.5.0/dep-linux-amd64 -o $GOPATH/bin/dep
+  - chmod +x $GOPATH/bin/dep
+  # Setup gometalinter
+  - go get -u github.com/alecthomas/gometalinter
+  - gometalinter --install
+
+install:
+  - dep ensure
+
+script:
+  - gometalinter -t --vendor ./...
+  - go test -v -race -cpu=1,2 -timeout 2s ./...

@@ -30,6 +30,12 @@ func (r Range) Encloses(dr Range) bool {
 	return r.Contains(dr.Start) && r.Contains(dr.End)
 }
 
+// Intersects returns true if r/dr contains any of dr/r bounds.
+func (r Range) Intersects(dr Range) bool {
+	return (r.Contains(dr.Start) || r.Contains(dr.End)) ||
+		(dr.Contains(r.Start) || dr.Contains(r.End))
+}
+
 // RangeSet used to works with date ranges list.
 type RangeSet []Range
 

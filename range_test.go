@@ -93,6 +93,95 @@ func TestBuildRanges(t *testing.T) {
 	}
 }
 
+func TestRangesIntersections(t *testing.T) {
+	for _, test := range []struct {
+		r1, r2   Range
+		expected bool
+	}{
+		{
+			r1: Range{
+				Start: Date{Year: 2018, Month: 10, Day: 15},
+				End:   Date{Year: 2018, Month: 10, Day: 25},
+			},
+			r2: Range{
+				Start: Date{Year: 2018, Month: 10, Day: 15},
+				End:   Date{Year: 2018, Month: 10, Day: 25},
+			},
+			expected: true,
+		},
+		{
+			r1: Range{
+				Start: Date{Year: 2018, Month: 10, Day: 15},
+				End:   Date{Year: 2018, Month: 10, Day: 25},
+			},
+			r2: Range{
+				Start: Date{Year: 2018, Month: 10, Day: 18},
+				End:   Date{Year: 2018, Month: 10, Day: 28},
+			},
+			expected: true,
+		},
+		{
+			r1: Range{
+				Start: Date{Year: 2018, Month: 10, Day: 15},
+				End:   Date{Year: 2018, Month: 10, Day: 25},
+			},
+			r2: Range{
+				Start: Date{Year: 2018, Month: 10, Day: 18},
+				End:   Date{Year: 2018, Month: 10, Day: 28},
+			},
+			expected: true,
+		},
+		{
+			r1: Range{
+				Start: Date{Year: 2018, Month: 10, Day: 15},
+				End:   Date{Year: 2018, Month: 10, Day: 25},
+			},
+			r2: Range{
+				Start: Date{Year: 2018, Month: 10, Day: 25},
+				End:   Date{Year: 2018, Month: 10, Day: 28},
+			},
+			expected: true,
+		},
+		{
+			r1: Range{
+				Start: Date{Year: 2018, Month: 10, Day: 15},
+				End:   Date{Year: 2018, Month: 10, Day: 24},
+			},
+			r2: Range{
+				Start: Date{Year: 2018, Month: 10, Day: 25},
+				End:   Date{Year: 2018, Month: 10, Day: 28},
+			},
+			expected: false,
+		},
+		{
+			r1: Range{
+				Start: Date{Year: 2018, Month: 10, Day: 15},
+				End:   Date{Year: 2018, Month: 10, Day: 24},
+			},
+			r2: Range{
+				Start: Date{Year: 2018, Month: 10, Day: 16},
+				End:   Date{Year: 2018, Month: 10, Day: 18},
+			},
+			expected: true,
+		},
+		{
+			r1: Range{
+				Start: Date{Year: 2018, Month: 10, Day: 15},
+				End:   Date{Year: 2018, Month: 10, Day: 24},
+			},
+			r2: Range{
+				Start: Date{Year: 2018, Month: 10, Day: 10},
+				End:   Date{Year: 2018, Month: 10, Day: 29},
+			},
+			expected: true,
+		},
+	} {
+		actual := test.r1.Intersects(test.r2)
+		assert.Equalf(t, test.expected, actual, "%v intersection with %v is %t, but %t expected",
+			test.r1, test.r2, actual, test.expected)
+	}
+}
+
 func TestRangeSet_Sub(t *testing.T) {
 	for _, test := range []struct {
 		basement []Range

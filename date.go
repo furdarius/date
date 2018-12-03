@@ -77,6 +77,18 @@ func (d Date) AddDays(n int) Date {
 	return FromTime(d.In(time.UTC).AddDate(0, 0, n))
 }
 
+// AddMonths returns the date that is n months in the future.
+// n can also be negative to go into the past.
+func (d Date) AddMonths(n int) Date {
+	return FromTime(d.In(time.UTC).AddDate(0, n, 0))
+}
+
+// AddDuration returns the date by appending dr to d.
+// dr can also be negative to go into the past.
+func (d Date) AddDuration(dr time.Duration) Date {
+	return FromTime(d.In(time.UTC).Add(dr))
+}
+
 // DaysSince returns the signed number of days between the date and s, not including the end day.
 // This is the inverse operation to AddDays.
 func (d Date) DaysSince(s Date) (days int) {
@@ -100,6 +112,16 @@ func (d Date) Before(p Date) bool {
 // After reports whether d1 occurs after p.
 func (d Date) After(p Date) bool {
 	return p.Before(d)
+}
+
+// FirstDayOfMonth returns the first day of month for d.
+func (d Date) FirstDayOfMonth() Date {
+	return FromTime(time.Date(d.Year, d.Month, 1, 0, 0, 0, 0, time.UTC))
+}
+
+// LastDayOfMonth returns the last day of month for d.
+func (d Date) LastDayOfMonth() Date {
+	return d.FirstDayOfMonth().AddMonths(1).AddDuration(-time.Nanosecond)
 }
 
 // Equal returns true if d equal d2.

@@ -193,6 +193,79 @@ func TestDateAfter(t *testing.T) {
 	}
 }
 
+func TestAddMonths(t *testing.T) {
+	for _, test :=  range []struct {
+		date  Date
+		months int
+		want  Date
+	}{
+		{Date{1970, 1, 1}, 1, Date{1970, 2, 1}},
+		{Date{1970, 1, 1}, -1, Date{1969, 12, 1}},
+		{Date{1970, 1, 1}, 12, Date{1971, 1, 1}},
+		{Date{1970, 12, 31}, 13, Date{1972, 1, 31}},
+		{Date{2016, 1, 29}, 1, Date{2016, 2, 29}},
+		{Date{2018, 1, 29}, 1, Date{2018, 3, 1}},
+		{Date{2018, 1, 15}, -120, Date{2008, 1, 15}},
+	} {
+		if got := test.date.AddMonths(test.months); got != test.want {
+			t.Errorf("%v.AddMonths(%d): got %v, want %v", test.date, test.months, got, test.want)
+		}
+	}
+}
+
+func TestAddDuration(t *testing.T) {
+	for _, test :=  range []struct {
+		date  Date
+		duration time.Duration
+		want  Date
+	}{
+		{Date{1970, 1, 1}, -time.Nanosecond, Date{1969, 12, 31}},
+		{Date{1970, 1, 1}, 24 * time.Hour, Date{1970, 1, 2}},
+	} {
+		if got := test.date.AddDuration(test.duration); got != test.want {
+			t.Errorf("%v.AddDuration(%d): got %v, want %v", test.date, test.duration, got, test.want)
+		}
+	}
+}
+
+func TestFirstDayOfMonth(t *testing.T) {
+	for _, test :=  range []struct {
+		date Date
+		want Date
+	}{
+		{Date{42, 4, 1}, Date{42, 4, 1}},
+		{Date{1970, 1, 15}, Date{1970, 1, 1}},
+		{Date{2001, 12, 31}, Date{2001, 12, 1}},
+		{Date{2010, 5, 2}, Date{2010, 5, 1}},
+		{Date{2018, 2, 28}, Date{2018, 2, 1}},
+		{Date{2020, 2, 29}, Date{2020, 2, 1}},
+		{Date{3050, 1, 31}, Date{3050, 1, 1}},
+	} {
+		if got := test.date.FirstDayOfMonth(); got != test.want {
+			t.Errorf("%v.FirstDayOfMonth(): got %v, want %v", test.date, got, test.want)
+		}
+	}
+}
+
+func TestLastDayOfMonth(t *testing.T) {
+	for _, test :=  range []struct {
+		date Date
+		want Date
+	}{
+		{Date{42, 4, 1}, Date{42, 4, 30}},
+		{Date{1970, 1, 15}, Date{1970, 1, 31}},
+		{Date{2001, 12, 31}, Date{2001, 12, 31}},
+		{Date{2010, 5, 2}, Date{2010, 5, 31}},
+		{Date{2018, 2, 20}, Date{2018, 2, 28}},
+		{Date{2020, 2, 5}, Date{2020, 2, 29}},
+		{Date{3050, 1, 31}, Date{3050, 1, 31}},
+	} {
+		if got := test.date.LastDayOfMonth(); got != test.want {
+			t.Errorf("%v.TestLastDayOfMonth(): got %v, want %v", test.date, got, test.want)
+		}
+	}
+}
+
 func TestMarshalJSON(t *testing.T) {
 	var d Date
 	for _, test := range []struct {
